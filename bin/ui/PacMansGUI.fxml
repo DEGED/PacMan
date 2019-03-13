@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Arc?>
+
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GameController">
+   <children>
+      <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Archivo">
+            <items>
+                  <MenuItem fx:id="save" mnemonicParsing="false" onAction="#gameSave" text="Guardar juego" />
+                  <Menu fx:id="load" mnemonicParsing="false" text="Cargar juego">
+                     <items>
+                        <MenuItem fx:id="lvl0" mnemonicParsing="false" onAction="#level0" text="level 0" />
+                        <MenuItem mnemonicParsing="false" onAction="#level1" text="level 1" />
+                        <MenuItem mnemonicParsing="false" onAction="#level2" text="level 2" />
+                     </items>
+                  </Menu>
+                  <MenuItem fx:id="out" mnemonicParsing="false" onAction="#getOut" text="Salir" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Ver">
+               <items>
+                  <MenuItem fx:id="scores" mnemonicParsing="false" onAction="#showScores" text="Mejores puntajes " />
+                  <MenuItem fx:id="know" mnemonicParsing="false" onAction="#knowGame" text="Acerca del juego" />
+               </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Arc fx:id="lol" fill="DODGERBLUE" layoutX="135.0" layoutY="204.0" length="270.0" radiusX="50.0" radiusY="37.0" startAngle="45.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+   </children>
+</Pane>
