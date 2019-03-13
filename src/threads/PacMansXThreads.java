@@ -1,5 +1,7 @@
 package threads;
 
+import java.util.ArrayList;
+
 import javafx.scene.shape.Arc;
 import model.PacMan;
 import ui.GameController;
@@ -8,25 +10,31 @@ public class PacMansXThreads extends Thread{
 	private boolean flag;
 	private GameController x;
 	private PacMan thePac;
-	private Arc pacForm;
+	private boolean r;
+	private ArrayList<Arc> pac;
+	private int id;
 	
-	public PacMansXThreads(boolean flag, GameController x, PacMan thePac, Arc pacForm) {
-		super();
+	public PacMansXThreads(boolean flag, GameController x, PacMan thePac,ArrayList<Arc> ofThread, int id) {
 		this.flag = flag;
 		this.x = x;
 		this.thePac = thePac;
-		this.pacForm = pacForm;
+		pac = ofThread;
+		this.id = id;
+		
 	}
-
 
 
 	public void run() {
 		while(flag) {
-			x.rigthToLeft(pacForm, thePac);
-			x.leftToRigth(pacForm, thePac);
-			try {
+			x.setPacman1and2(pac.get(id));
+			
+			x.leftToRigth(thePac);
+//			System.out.println(pacForm.getCenterX());
+//			x.leftToRigth(thePac);
+//			System.out.println(x.getPacman1and2().getCenterX());
+			try{
 				sleep(30);
-			}catch(InterruptedException e) {
+			}catch(InterruptedException e){
 				e.printStackTrace();
 			} 
 		}

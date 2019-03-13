@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+
+import javafx.scene.shape.Arc;
+
 public class PacMan {
 	
 	public static int IZQUIERDA = 1;
@@ -13,6 +17,7 @@ public class PacMan {
 	private double posY;
 	private int direction;
 	private boolean catchStatus;
+	
 	
 	public PacMan(double radioo, double posx, double posy, int dire) {
 		radio = radioo;
