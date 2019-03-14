@@ -28,12 +28,14 @@ public class PacMansXThreads extends Thread{
 		while(flag) {
 			x.setPacman1and2(pac.get(id));
 			
-			x.leftToRigth(thePac);
+			thePac.setDirection(x.rigthToLeft(thePac));
+			thePac.setDirection(x.leftToRigth(thePac));
+			
 //			System.out.println(pacForm.getCenterX());
 //			x.leftToRigth(thePac);
 //			System.out.println(x.getPacman1and2().getCenterX());
 			try{
-				sleep(30);
+				sleep(500);
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			} 

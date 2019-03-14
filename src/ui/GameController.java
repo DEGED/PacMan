@@ -14,10 +14,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
+import model.FileManager;
 import model.PacMan;
 import threads.*;
 
-public class GameController {
+public class GameController{
 
     @FXML
     private ResourceBundle resources;
@@ -51,6 +52,7 @@ public class GameController {
     
     private ArrayList<PacMan> pacs;
     private ArrayList<Arc> skins;
+    private FileManager l;
 
     private Arc pacman1and2;
     
@@ -92,20 +94,23 @@ public class GameController {
     	System.out.println(p.getCenterY());
     	System.out.println(p.getRadiusX());
     	*/
-//    	PacMansXThreads x = new PacMansXThreads(true, this, pacs.get(i), skins, i);
     	
-//    	x.start();
     	/*
     	System.out.println(pacman1and2.getRadiusX());
     	System.out.println(pacman1and2.getLayoutY());
     	System.out.println(pacman1and2.getLayoutX());
     	*/
     	}
+    	for(int i = 0; i<skins.size(); i++) {
+        	PacMansXThreads x = new PacMansXThreads(true, this, pacs.get(i), skins, i);
+        	
+        	x.start();
+        }
     }
 
     @FXML
     void level1(ActionEvent event){
-
+    
     }
 
     @FXML
@@ -117,65 +122,85 @@ public class GameController {
     void showScores(ActionEvent event){
 
     }
-    public void leftToRigth(PacMan gen){
-    	System.out.println(gen.getDirection());
+    public int leftToRigth(PacMan gen){
+//    	System.out.println(gen.getDirection());
+    	int retu = 2;
     	while(gen.getDirection() == 2){
     		pacman1and2.setCenterX(pacman1and2.getCenterX()+5);
     		gen.setPosX(pacman1and2.getCenterX());
     		System.out.println("derecha");	
-    		if(pacman1and2.getCenterX()>pane.getWidth()){
-        		gen.setDirection(1);
-        		
+    		System.out.println(pacman1and2.getCenterX());
+    		if(pacman1and2.getCenterX()>=pane.getWidth()){
+        		retu = 1;
+        		System.out.println("SI");
+        		break;
         	}
     	}
-    
-    }
-    
-    public void  rigthToLeft(PacMan gen){
-    	while(gen.getDirection() == 1) {
-    		pacman1and2.setLayoutX(pacman1and2.getLayoutX()-5);
-    		gen.setPosX(pacman1and2.getLayoutX());
-    		if(pacman1and2.getLayoutX()>pane.getWidth()){
-        		gen.setDirection(2);
-        		System.out.println("izquierda");
-        	}
-    	}
-    }
-    public void leftToRigth1(PacMan gen){
     	
-    	while(gen.getDirection() == 1) {
+    	return retu;
+    }
+    
+    public int  rigthToLeft(PacMan gen){
+    	int retu = 1;
+    	while(gen.getDirection() == 1){
     		pacman1and2.setCenterX(pacman1and2.getCenterX()-5);
     		gen.setPosX(pacman1and2.getCenterX());
-    		if(pacman1and2.getCenterX()>pane.getWidth()){
-        		gen.setDirection(2);
-        		System.out.println("izquierda");
+    		System.out.println("izquierda");
+    		System.out.println(pacman1and2.getCenterX());
+    		if(pacman1and2.getCenterX()<=0){
+    			retu = 2;
+        		System.out.println("SI");
+        		break;
         	}
     	}
+    	
+    	return retu;
     }
-    public void downToUp(Arc pac, PacMan gen){
-    	while(gen.getDirection() == 3) {
-    		pac.setLayoutY(pac.getLayoutY()-5);
-    		gen.setPosY(pac.getLayoutY());
+   
+    public int downToUp(PacMan gen){
+    	int retu = 3;
+    	while(gen.getDirection() == 3){
+    		pacman1and2.setCenterY(pacman1and2.getCenterX()+5);
+    		gen.setPosY(pacman1and2.getCenterY());
+    		System.out.println("Subiendo");	
+    		System.out.println(pacman1and2.getCenterX());
+    		if(pacman1and2.getCenterY()>=pane.getHeight()){
+        		retu = 4;
+        		System.out.println("SI");
+        		break;
+        	}
     	}
-    	if(pac.getLayoutY()>pane.getHeight()){
-    		gen.setDirection(4);;
-    	}
+    	
+    	return retu;
     }
-    public void upToDown(Arc pac, PacMan gen){
-    	while(gen.getDirection() == 4) {
-    		pac.setLayoutY(pac.getLayoutY()+5);
-    		gen.setPosY(pac.getLayoutY());
+    /*
+     * 
+     
+    public int upToDown(PacMan gen){
+    	int retu = 4;
+    	while(gen.getDirection() == 4){
+    		pacman1and2.setCenterY(pacman1and2.getCenterY()-5);
+    		gen.setPosY(pacman1and2.getCenterY());
+    		System.out.println("Bajando");
+    		System.out.println(pacman1and2.getCenterY());
+    		if(pacman1and2.getCenterY()<=0){
+        		retu = 3;
+        		System.out.println("SI");
+        		break;
+        	}
     	}
-    	if(pac.getLayoutY()>pane.getHeight()){
-    		gen.setDirection(3);
-    	}
+    	
+    	return retu;
     }
+    }
+    */
     
     public void createPac() throws IOException {
     	pacs.clear();
-    	loadSPacManFile("data/lvl.txt.txt", ";");
+    	
+    	pacs = l.loadPacman("data/lvl.txt.txt", ";");
     	for(int i = 0; i<pacs.size(); i++) {
-    		PacMan zero = pacs.get(i);
+    		PacMan zero = pacs.get(0);
     		/*
     		System.out.println(zero.getPosX());
         	System.out.println(zero.getPosY());
@@ -186,11 +211,11 @@ public class GameController {
         	*/
     		Arc pac1 = new Arc(zero.getPosX(), zero.getPosY(), zero.getRadio(), zero.getRadio(), 50, 270);
     		
-    		 
+    		/*
     		System.out.println(pac1.getCenterX());
         	System.out.println(pac1.getCenterY());
         	System.out.println(pac1.getRadiusX());
-        	/*
+        
     		 * 
         	*/
     		pac1.setType(ArcType.ROUND);
@@ -199,6 +224,9 @@ public class GameController {
     		
     	}
     }   
+    /*
+     * 
+    
     public void loadSPacManFile(String path, String sep) throws IOException{
 		File f = new File(path);
 		FileReader fr = new FileReader(f);
@@ -228,6 +256,7 @@ public class GameController {
 		br.close();
 		fr.close();
 	}
+	 */
     public Arc getPacman1and2() {
 		return pacman1and2;
 	}
@@ -240,6 +269,7 @@ public class GameController {
     	pacs = new ArrayList<PacMan>();
     	flag = true;
     	pacman1and2 = new Arc();
+    	l = new FileManager();
         assert pane != null : "fx:id=\"pane\" was not injected: check your FXML file 'PacMansGUI.fxml'.";
         assert save != null : "fx:id=\"save\" was not injected: check your FXML file 'PacMansGUI.fxml'.";
         assert load != null : "fx:id=\"load\" was not injected: check your FXML file 'PacMansGUI.fxml'.";
