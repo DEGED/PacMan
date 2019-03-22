@@ -1,11 +1,10 @@
 package model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-import javafx.scene.shape.Arc;
 
-public class PacMan {
-	
+public class PacMan implements Serializable{
+	private static final long serialVersionUID = 1L;
 	public static int IZQUIERDA = 1;
 	public static int DERECHA = 2;
 	public static int ARRIBA = 3;
@@ -16,17 +15,65 @@ public class PacMan {
 	private double posX;
 	private double posY;
 	private int direction;
+	private long time;
 	private boolean catchStatus;
+	private int bounce;
 	
 	
-	public PacMan(double radioo, double posx, double posy, int dire) {
+	public int getBounce() {
+		return bounce;
+	}
+	public void setBounce(int bounce) {
+		this.bounce = bounce;
+	}
+	public PacMan(double radioo, double posx, double posy, int dire, long timee) {
 		radio = radioo;
 		posX = posx;
 		posY = posy;
 		direction = dire;
-		catchStatus = true;
+		catchStatus = false;
+		bounce = 0;
+		setTime(timee);
 	}
-
+	public void rigthAndLeft(double max) {
+		switch(direction) {
+		case 1:
+			if(posX < 0) {
+				direction = DERECHA;
+				bounce++;
+			}else {
+				posX = posX-5;
+			}
+		break;
+		case 2:
+			if(posX >= max){
+				direction = IZQUIERDA;
+				bounce++;
+			}else {
+				posX = posX+5;
+			}
+		break;
+		}
+		
+	}
+	public void upAndDown(double max ) {
+		switch(direction) {
+			case 3:
+				if(posY < 0) {
+					direction = ABAJO;
+				}else {
+					posY = posY-5;
+				}
+			break;
+			case 4:
+				if(posY >= max) {
+					direction = ARRIBA;
+				}else{
+					posY = posY+5;
+				}
+			break;	 
+		}
+	}
 	public void changeStatus() {
 		catchStatus = false;
 	}
@@ -51,7 +98,7 @@ public class PacMan {
 	public void setPosY(double posY) {
 		this.posY = posY;
 	}
-	public boolean isCatchStatus() {
+	public boolean getCatchStatus() {
 		return catchStatus;
 	}
 	public void setCatchStatus(boolean catchStatus) {
@@ -64,6 +111,13 @@ public class PacMan {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+
+	public long getTime() {
+		return time;
+	}
+	public void setTime(long time) {
+		this.time = time;
 	}
 	
 }
